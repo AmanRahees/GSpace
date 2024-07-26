@@ -15,7 +15,6 @@ const Meeting = ({ params }: { params: { id: string } }) => {
   }
   const toggleSetup = () => {
     setIsSetupComplete(!isSetupComplete);
-    console.log(isSetupComplete);
   };
   return (
     <main className="h-screen w-full">

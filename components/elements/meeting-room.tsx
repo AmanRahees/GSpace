@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import EndCallBtn from "./end-call-btn";
 import { cn } from "@/lib/utils";
+import Loader from "./loader";
 
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 
@@ -30,6 +31,11 @@ const MeetingRoom = () => {
   const isPersonalRoom = !!searchParams.get("personal");
   const [layout, setLayout] = useState<CallLayoutType>("speaker-left");
   const [showParticipants, setShowParticipants] = useState(false);
+  const { useCallCallingState } = useCallStateHooks();
+  const callingState = useCallCallingState();
+  if (callingState !== CallingState.JOINED) {
+    return <Loader />;
+  }
   const CallLayout = () => {
     switch (layout) {
       case "grid":
@@ -43,7 +49,7 @@ const MeetingRoom = () => {
     }
   };
   return (
-    <section className="relative h-screen w-full text-white">
+    <section className="relative h-screen w-full overflow-hidden text-white">
       <div className="relative flex-center size-full">
         <div className=" flex size-full max-w-[1000px] items-center">
           <CallLayout />
@@ -57,7 +63,7 @@ const MeetingRoom = () => {
         </div>
       </div>
       {/*  */}
-      <div className="fixex bottom-0 flex-center w-full gap-5">
+      <div className="fixed bottom-0 flex-center flex-wrap w-full gap-5">
         <CallControls onLeave={() => router.push(`/`)} />
         <DropdownMenu>
           <div className="flex items-center">
